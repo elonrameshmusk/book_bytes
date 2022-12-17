@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bb/views/components/bottom_navbar_layout.dart';
+import 'package:bb/views/components/navbar_appbar_layout.dart';
 import 'package:bb/views/components/colors.dart';
 
 void main() {
@@ -24,24 +24,22 @@ class MyApp extends StatelessWidget {
             ),
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: colors['primary_container'],
-            iconSize: 25.0,
-            foregroundColor: colors['on_primary_container']
-          ),
+              backgroundColor: colors['primary_container'],
+              iconSize: 25.0,
+              foregroundColor: colors['on_primary_container']),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: colors['surface'],
+
             selectedIconTheme: IconThemeData(
               size: 25.0,
-              color: colors['on_secondary_container']
+              color: colors['on_secondary_container'],
             ),
             selectedItemColor: colors['on_secondary_container'],
             selectedLabelStyle: TextStyle(
               color: colors['on_surface'],
             ),
-            unselectedIconTheme: IconThemeData(
-              size: 25.0,
-              color: colors['on_surface_variant']
-            ),
+            unselectedIconTheme:
+                IconThemeData(size: 25.0, color: colors['on_surface_variant']),
             unselectedItemColor: colors['on_surface_variant'],
             unselectedLabelStyle: TextStyle(
               color: colors['on_surface_variant'],
