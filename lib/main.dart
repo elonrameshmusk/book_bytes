@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bb/views/components/navbar_appbar_layout.dart';
+import 'package:bb/views/components/navbar_layout.dart';
 import 'package:bb/views/components/colors.dart';
 
 void main() {
@@ -44,6 +44,9 @@ class MyApp extends StatelessWidget {
             unselectedLabelStyle: TextStyle(
               color: colors['on_surface_variant'],
             ),
+          ),
+          iconTheme: const IconThemeData(
+            size: 25.0
           ),
           useMaterial3: true),
       home: const BottomNavbarLayout(),
