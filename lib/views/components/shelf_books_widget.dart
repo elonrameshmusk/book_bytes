@@ -1,3 +1,4 @@
+import 'package:bb/views/components/add_book_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bb/views/components/colors.dart';
 
@@ -140,46 +141,14 @@ class _ShelfBooksWidgetState extends State<ShelfBooksWidget> {
                     foregroundColor: colors['on_primary']
                 ),
                 child: const Text('Add new book'),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    backgroundColor: colors['background'],
-                    title: Text('add new book',
-                        style: TextStyle(color: colors['on_background'])),
-                    content: TextField(
-                      // controller: _dialogTextFieldController,
-                      cursorColor: colors['primary'],
-                      decoration: InputDecoration(
-                        hintText: 'New book',
-                        contentPadding: const EdgeInsets.all(8),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: colors['primary']!, width: 2.0),
-                        ),
-                        border: const OutlineInputBorder(),
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: colors['primary']),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // print(_dialogTextFieldController.text);
-                          Navigator.pop(context, 'Add');
-                        },
-                        child: Text(
-                          'Add',
-                          style: TextStyle(color: colors['primary']),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        const AddBookWidget()),
+                  );
+                },
               ),
             )
           ],

@@ -116,7 +116,6 @@ class _ShelvesWidgetState extends State<ShelvesWidget> {
                       } else {
                         return GestureDetector(
                           onTap: () {
-                            print('shelf pressed');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
