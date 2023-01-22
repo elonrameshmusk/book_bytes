@@ -47,34 +47,93 @@ class _ShelfBooksWidgetState extends State<ShelfBooksWidget> {
       'https://d2cbg94ubxgsnp.cloudfront.net/Pictures/480xAny/2/8/3/503283_the_universe_1.9781788686365.browse.0_22969.jpg'
     ]: false,
   };
+  final List<String> _checkedItems = [];
+  getCheckboxItems() {
+    _books.forEach((key, value) {
+      if (value == true) {
+        _checkedItems.add(key[0]);
+      }
+    });
+    print(_checkedItems);
+    _checkedItems.clear();
+  }
+
   bool item_select_mode = false;
+  Widget variableWidget(int index) {
+    if (item_select_mode) {
+      return Checkbox(
+          checkColor: Colors.white,
+          activeColor: colors['primary'],
+          value: _books.values.elementAt(index),
+          onChanged: (bool? value) {
+            setState(() {
+              _books[_books.keys.elementAt(index)] =
+                  !_books.values.elementAt(index);
+            });
+          });
+    } else {
+      return Icon(
+        Icons.more_vert,
+        color: colors['outline'],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page 2'),
+        scrolledUnderElevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            if (item_select_mode) {
+              setState(() {
+                item_select_mode = false;
+              });
+            }
+          },
+          icon: Icon(item_select_mode ? Icons.arrow_back : Icons.menu),
+        ),
+        title: Text(
+          item_select_mode ? 'Select books' : 'Books',
+          style: TextStyle(color: colors['on_surface']),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (item_select_mode) {
+                setState(() {
+                  _books.forEach((key, value) {
+                    _books[key] = true;
+                  });
+                });
+              } else {}
+            },
+            icon: Icon(item_select_mode ? Icons.checklist : Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              if (item_select_mode) {
+                getCheckboxItems();
+              } else {
+                setState(() {
+                  item_select_mode = !item_select_mode;
+                });
+              }
+            },
+            icon: Icon(
+                item_select_mode ? Icons.delete : Icons.check_box_outlined),
+          ),
+        ],
       ),
       body: Container(
-        color: colors['background'],
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 7,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (item_select_mode) {
-                      return CheckboxListTile(
-                        title: Text(_books.keys.elementAt(index)[0]),
-                        value: _books[_books.keys.elementAt(index)],
-                        activeColor: Colors.pink,
-                        checkColor: Colors.white,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _books[_books.keys.elementAt(index)] = value!;
-                          });
-                        },
-                      );
-                    } else {
+          color: colors['background'],
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 7,
+                    itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           print('book pressed');
@@ -90,30 +149,33 @@ class _ShelfBooksWidgetState extends State<ShelfBooksWidget> {
                                 height: MediaQuery.of(context).size.height * 1,
                                 child: Center(
                                     child: Image(
-                                        image: NetworkImage(_books.keys.elementAt(index)[2])
-                                      // color: colors['primary_container'],
-                                    )),
+                                        image: NetworkImage(
+                                            _books.keys.elementAt(index)[2])
+                                        // color: colors['primary_container'],
+                                        )),
                               ),
                               SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.60,
-                                  height: MediaQuery.of(context).size.height * 1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.60,
+                                  height:
+                                      MediaQuery.of(context).size.height * 1,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         _books.keys.elementAt(index)[0],
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            color: colors['on_background']
-                                        ),
+                                            color: colors['on_background']),
                                       ),
                                       Text(
                                         _books.keys.elementAt(index)[1],
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            color: colors['on_surface_variant']
-                                        ),
+                                            color:
+                                                colors['on_surface_variant']),
                                       ),
                                     ],
                                   )),
@@ -121,39 +183,33 @@ class _ShelfBooksWidgetState extends State<ShelfBooksWidget> {
                                 width: MediaQuery.of(context).size.width * 0.20,
                                 height: MediaQuery.of(context).size.height * 1,
                                 child: Center(
-                                    child: Icon(
-                                      Icons.more_vert,
-                                      color: colors['outline'],
-                                    )),
+                                  child: variableWidget(index),
+                                ),
                               ),
                             ],
                           ),
                         ),
                       );
-                    }
-                  }),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: colors['primary'],
-                    foregroundColor: colors['on_primary']
-                ),
-                child: const Text('Add new book'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const AddBookWidget()),
-                  );
-                },
+                    }),
               ),
-            )
-          ],
-        )
-      ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: colors['primary'],
+                      foregroundColor: colors['on_primary']),
+                  child: const Text('Add new book'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddBookWidget()),
+                    );
+                  },
+                ),
+              )
+            ],
+          )),
     );
   }
 }

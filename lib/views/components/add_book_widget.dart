@@ -9,6 +9,13 @@ class AddBookWidget extends StatefulWidget {
 }
 
 class _AddBookWidgetState extends State<AddBookWidget> {
+  final _controller = TextEditingController();
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   final Map<List<String>, bool> _books = {
     [
       'The man who knew infinity',
@@ -46,16 +53,37 @@ class _AddBookWidgetState extends State<AddBookWidget> {
       'https://d2cbg94ubxgsnp.cloudfront.net/Pictures/480xAny/2/8/3/503283_the_universe_1.9781788686365.browse.0_22969.jpg'
     ]: false,
   };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add books'),
+        title: const Text('Add books'),
       ),
       body: Container(
           color: colors['background'],
           child: Column(
             children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 18),
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: _controller.clear,
+                      icon: const Icon(Icons.clear_outlined),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: colors['on_surface']!, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: colors['primary']!, width: 1)),
+                    hintText: 'Search by book our author name',
+                  ),
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                     itemCount: 7,
@@ -111,7 +139,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                     setState(() {
                                       _books.update(
                                           _books.keys.elementAt(index),
-                                              (value) => true);
+                                          (value) => true);
                                     });
                                   },
                                   child: Center(

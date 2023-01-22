@@ -46,6 +46,28 @@ class _ShelvesWidgetState extends State<ShelvesWidget> {
     super.dispose();
   }
 
+
+
+  Widget variableWidget(int index) {
+    if (item_select_mode) {
+      return Checkbox(
+          checkColor: Colors.white,
+          activeColor: colors['primary'],
+          value: _shelves.values.elementAt(index),
+          onChanged: (bool? value) {
+            setState(() {
+              _shelves[_shelves.keys.elementAt(index)] =
+                  !_shelves.values.elementAt(index);
+            });
+          });
+    } else {
+      return Icon(
+        Icons.more_vert,
+        color: colors['outline'],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,85 +123,62 @@ class _ShelvesWidgetState extends State<ShelvesWidget> {
                 child: ListView.builder(
                     itemCount: 15,
                     itemBuilder: (BuildContext context, int index) {
-                      if (item_select_mode) {
-                        return CheckboxListTile(
-                          title: Text(_shelves.keys.elementAt(index)),
-                          value: _shelves[_shelves.keys.elementAt(index)],
-                          activeColor: Colors.pink,
-                          checkColor: Colors.white,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _shelves[_shelves.keys.elementAt(index)] = value!;
-                            });
-                          },
-                        );
-                      } else {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ShelfBooksWidget()),
-                            );
-                          },
-                          child: SizedBox(
-                            height: 60,
-                            width: MediaQuery.of(context).size.width * 1,
-                            child: Row(
-                              children: [
-                                SizedBox(
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ShelfBooksWidget()),
+                          );
+                        },
+                        child: SizedBox(
+                          height: 60,
+                          width: MediaQuery.of(context).size.width * 1,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.20,
+                                height: MediaQuery.of(context).size.height * 1,
+                                child: Center(
+                                    child: Icon(
+                                  Icons.folder,
+                                  color: colors['primary_container'],
+                                )),
+                              ),
+                              SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.20,
+                                      MediaQuery.of(context).size.width * 0.60,
                                   height:
                                       MediaQuery.of(context).size.height * 1,
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.folder,
-                                    color: colors['primary_container'],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _shelves.keys.elementAt(index),
+                                      )
+                                    ],
                                   )),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.20,
+                                height: MediaQuery.of(context).size.height * 1,
+                                child: Center(
+                                  child: variableWidget(index),
                                 ),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.60,
-                                    height:
-                                        MediaQuery.of(context).size.height * 1,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _shelves.keys.elementAt(index),
-                                        )
-                                      ],
-                                    )),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.20,
-                                  height:
-                                      MediaQuery.of(context).size.height * 1,
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.more_vert,
-                                    color: colors['outline'],
-                                  )),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      }
+                        ),
+                      );
                     }),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: colors['primary'],
-                    foregroundColor: colors['on_primary']
-                  ),
+                      backgroundColor: colors['primary'],
+                      foregroundColor: colors['on_primary']),
                   child: const Text('Add new shelf'),
                   onPressed: () => showDialog<String>(
                     context: context,
@@ -194,8 +193,8 @@ class _ShelvesWidgetState extends State<ShelvesWidget> {
                           hintText: 'New shelf',
                           contentPadding: const EdgeInsets.all(8),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                            BorderSide(color: colors['primary']!, width: 2.0),
+                            borderSide: BorderSide(
+                                color: colors['primary']!, width: 2.0),
                           ),
                           border: const OutlineInputBorder(),
                         ),
@@ -225,7 +224,6 @@ class _ShelvesWidgetState extends State<ShelvesWidget> {
               )
             ],
           )),
-
     );
   }
 }
